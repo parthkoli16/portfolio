@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parth Koli · Cybersecurity</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #060810;
+  --panel: #090d18;
+  --panel2: #0c1120;
+  --border: #132040;
+  --border2: #1e3060;
+  --cyan: #00f0ff;
+  --cyan2: #00b8cc;
+  --green: #00ff9d;
+  --amber: #ffb800;
+  --blue: #4d8bff;
+  --text: #cdd9f0;
+  --muted: #4a6080;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* BG GRID */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,240,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── PAGE SYSTEM ── */
+.page {
+  position: fixed; inset: 0; z-index: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: none;
+}
+.page.active { display: block; }
+
+/* ── CENTER WRAPPER FOR HOME ── */
+.home-wrap {
+  max-width: 660px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+/* ── INNER WRAP FOR SUB PAGES ── */
+.inner-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.back-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--cyan);
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.back-btn:hover { background: rgba(0,240,255,0.1); }
+.breadcrumb {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; color: var(--muted);
+  margin-left: 0.75rem;
+}
+.breadcrumb span { color: var(--cyan2); }
+.online-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 7px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+  display: inline-block;
+}
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+/* ── NAME BLOCK ── */
+.name-block { text-align: center; margin-bottom: 1.5rem; }
+.name-contact {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--cyan2); margin-top: 0.5rem;
+  display: flex; justify-content: center;
+  align-items: center; gap: 0.6rem; flex-wrap: wrap;
+}
+.name-contact .divider { color: var(--muted); }
+.name-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.2em;
+  color: var(--muted); margin-bottom: 0.5rem;
+}
+.name-main {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 7vw, 3.2rem);
+  font-weight: 800; letter-spacing: 0.06em;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(0,240,255,0.2);
+}
+.name-main span { color: var(--cyan); }
+.name-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.14em;
+  color: var(--cyan2); margin-top: 0.5rem;
+}
+.badge-row {
+  display: flex; justify-content: center;
+  gap: 0.5rem; flex-wrap: wrap; margin-top: 0.85rem;
+}
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.08em;
+  padding: 0.22rem 0.7rem; border-radius: 2px; border: 1px solid;
+}
+.badge.c { border-color: rgba(0,240,255,0.4); color: var(--cyan); }
+.badge.g { border-color: rgba(0,255,157,0.4); color: var(--green); }
+.badge.a { border-color: rgba(255,184,0,0.4); color: var(--amber); }
+
+/* ── STATS ROW ── */
+.stats-row {
+  display: flex; gap: 0.75rem; margin-bottom: 1rem;
+}
+.stat-box {
+  flex: 1;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 4px; padding: 0.85rem 0.5rem;
+  text-align: center;
+}
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem; font-weight: 800;
+}
+.stat-num.c { color: var(--cyan); text-shadow: 0 0 14px rgba(0,240,255,0.4); }
+.stat-num.g { color: var(--green); text-shadow: 0 0 14px rgba(0,255,157,0.4); }
+.stat-num.a { color: var(--amber); }
+.stat-num.b { color: var(--blue); }
+.stat-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; color: var(--muted);
+  letter-spacing: 0.1em; margin-top: 0.2rem;
+}
+
+/* ── ABOUT BLOCK ── */
+.about-block {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--cyan);
+  border-radius: 4px;
+  padding: 1.25rem 1.4rem;
+  font-size: 0.97rem; font-weight: 400;
+  line-height: 1.75; color: var(--text);
+  margin-bottom: 1rem;
+}
+.hl-green { color: var(--green); font-weight: 600; }
+.hl-cyan  { color: var(--cyan);  font-weight: 600; }
+
+/* ── CONTACT ROWS ── */
+.contact-grid {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.c-row {
+  display: flex; align-items: center;
+  padding: 0.7rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+}
+.c-row:last-child { border-bottom: none; }
+.c-key {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.1em;
+  color: var(--muted); width: 100px; flex-shrink: 0;
+}
+.c-val {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem; font-weight: 600; color: var(--text);
+}
+.c-val.cyan { color: var(--cyan); }
+.c-val.green { color: var(--green); }
+
+/* ── NAV BUTTONS ── */
+.nav-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.nav-btn {
+  display: flex; align-items: center; gap: 0.9rem;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1rem 1.1rem;
+  cursor: pointer; text-align: left; transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.nav-btn::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--btn-color, var(--cyan));
+}
+.nav-btn:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+.nav-btn.wide { grid-column: span 2; }
+.nav-icon { font-size: 1.4rem; flex-shrink: 0; }
+.nav-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem; font-weight: 700; color: #fff;
+}
+.nav-desc {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; color: var(--muted); margin-top: 0.15rem;
+}
+.nav-arrow {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem; color: var(--muted);
+  transition: transform 0.2s, color 0.2s;
+}
+.nav-btn:hover .nav-arrow { transform: translateX(4px); color: var(--cyan); }
+
+/* ── PAGE TITLES ── */
+.page-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 800; color: #fff;
+  margin-bottom: 0.2rem;
+}
+.page-title em { color: var(--cyan); font-style: normal; }
+.page-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; color: var(--muted);
+  letter-spacing: 0.12em; margin-bottom: 2rem;
+}
+
+/* ── SECTION LABEL ── */
+.sec-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.18em;
+  color: var(--cyan); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.sec-label::before { content: '//'; opacity: 0.4; }
+.sec-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border2), transparent);
+}
+
+/* ── SKILL BARS ── */
+.skill-section { margin-bottom: 2rem; }
+.srow {
+  display: grid; grid-template-columns: 190px 1fr 44px;
+  align-items: center; gap: 1rem; margin-bottom: 0.7rem;
+}
+.srow-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--text);
+}
+.bar-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.bar-fill {
+  height: 100%; border-radius: 2px; width: 0;
+  transition: width 1.3s cubic-bezier(0.2,0.8,0.2,1);
+}
+.bar-fill.c { background: linear-gradient(90deg, var(--cyan2), var(--cyan)); box-shadow: 0 0 8px rgba(0,240,255,0.5); }
+.bar-fill.g { background: linear-gradient(90deg, #00c478, var(--green)); box-shadow: 0 0 8px rgba(0,255,157,0.4); }
+.bar-fill.a { background: linear-gradient(90deg, #9a7000, var(--amber)); }
+.srow-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; color: var(--muted); text-align: right;
+}
+
+/* ── TAGS ── */
+.tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.5rem; }
+.tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  padding: 0.28rem 0.7rem; border-radius: 2px;
+  border: 1px solid var(--border2); color: var(--text); background: var(--panel2);
+  transition: all 0.18s; cursor: default;
+}
+.tag:hover { border-color: var(--cyan2); color: var(--cyan); }
+.tag.c { border-color: rgba(0,240,255,0.3); color: var(--cyan); background: rgba(0,240,255,0.06); }
+.tag.g { border-color: rgba(0,255,157,0.3); color: var(--green); background: rgba(0,255,157,0.05); }
+.tag.a { border-color: rgba(255,184,0,0.3); color: var(--amber); background: rgba(255,184,0,0.05); }
+
+/* ── TOOL TABLE ── */
+.tool-table { width: 100%; border-collapse: collapse; }
+.tool-table tr { border-bottom: 1px solid var(--border); }
+.tool-table tr:last-child { border-bottom: none; }
+.tool-table tr:hover { background: var(--panel2); }
+.tool-table td { padding: 0.7rem 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; }
+.t-icon { width: 36px; text-align: center; font-size: 1rem; }
+.t-name { color: var(--text); }
+.t-cat { color: var(--muted); font-size: 0.6rem; letter-spacing: 0.08em; }
+.pips { display: flex; gap: 3px; }
+.pip { width: 10px; height: 4px; border-radius: 1px; background: var(--border2); }
+.pip.c { background: var(--cyan); box-shadow: 0 0 4px rgba(0,240,255,0.5); }
+.pip.g { background: var(--green); }
+.pip.a { background: var(--amber); }
+
+/* ── CERT CARDS ── */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 0.85rem; margin-bottom: 2rem;
+}
+.cert-card {
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1.2rem;
+  position: relative; overflow: hidden; transition: all 0.2s;
+}
+.cert-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.cert-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; width: 3px; height: 100%;
+}
+.cert-card.c::before { background: var(--cyan); }
+.cert-card.g::before { background: var(--green); }
+.cert-card.a::before { background: var(--amber); }
+.cert-card.b::before { background: var(--blue); }
+.cert-card.dashed { border-style: dashed; opacity: 0.7; }
+.cert-issuer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.08em;
+  color: var(--muted); margin-bottom: 0.35rem;
+}
+.cert-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  color: #fff; line-height: 1.3; margin-bottom: 0.5rem;
+}
+.cert-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.64rem; color: var(--muted);
+}
+.cert-badge {
+  position: absolute; top: 0.85rem; right: 0.85rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.58rem;
+  padding: 0.18rem 0.5rem; border-radius: 2px;
+}
+.cert-badge.done { background: rgba(0,255,157,0.1); border: 1px solid rgba(0,255,157,0.3); color: var(--green); }
+.cert-badge.wip  { background: rgba(255,184,0,0.1);  border: 1px solid rgba(255,184,0,0.3);  color: var(--amber); }
+
+/* ── TIMELINE ── */
+.tl-item {
+  display: grid; grid-template-columns: 110px 1fr;
+  gap: 1.25rem; padding-bottom: 2rem; position: relative;
+}
+.tl-item:last-child { padding-bottom: 0; }
+.tl-line {
+  position: absolute; left: 110px; top: 0.6rem; bottom: 0;
+  width: 1px; background: var(--border);
+}
+.tl-item:last-child .tl-line { display: none; }
+.tl-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; color: var(--muted);
+  text-align: right; padding-top: 0.15rem;
+}
+.tl-body { padding-left: 1.4rem; position: relative; }
+.tl-dot {
+  position: absolute; left: -0.38rem; top: 0.25rem;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
+}
+.tl-role {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.1rem;
+}
+.tl-org {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.63rem; color: var(--cyan2); margin-bottom: 0.55rem;
+}
+.tl-bullets { list-style: none; }
+.tl-bullets li {
+  font-size: 0.92rem; font-weight: 400; color: var(--text);
+  padding: 0.2rem 0 0.2rem 1.1rem; position: relative; line-height: 1.5;
+}
+.tl-bullets li::before {
+  content: '▸'; position: absolute; left: 0;
+  color: var(--cyan); font-size: 0.65rem; top: 0.35rem;
+}
+.tl-hl { color: var(--green); font-weight: 600; }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+.fade-in { animation: fadeUp 0.45s ease both; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════ HOME ════════════════ -->
+<div class="page active" id="page-home">
+  <div class="home-wrap fade-in">
+
+    <div class="name-block">
+      <div class="name-main">PARTH <span>KOLI</span></div>
+      <div class="name-role">SOC ANALYST · INCIDENT RESPONSE · IAM</div>
+      <div class="name-contact">
+        <span>📞 +44 7586 158281</span>
+        <span class="divider">|</span>
+        <span>✉ parthkoli16@gmail.com</span>
+      </div>
+      <div class="badge-row">
+        <span class="badge c">MSc CYBERSECURITY · MERIT</span>
+        <span class="badge g">OPEN TO WORK · UK</span>
+        <span class="badge a">MANCHESTER</span>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num c">95%</div><div class="stat-lbl">SLA COMPLIANCE</div></div>
+      <div class="stat-box"><div class="stat-num g">1+</div><div class="stat-lbl">YRS EXPERIENCE</div></div>
+      <div class="stat-box"><div class="stat-num a">5</div><div class="stat-lbl">CERTIFICATIONS</div></div>
+      <div class="stat-box"><div class="stat-num b">MSc</div><div class="stat-lbl">MERIT · 2026</div></div>
+    </div>
+
+    <div class="about-block">
+      Cybersecurity professional with hands-on experience in SOC operations, phishing analysis, and identity &amp; access management across Windows and Microsoft 365 environments.<br><br>
+      At SHCN, I maintained <span class="hl-green">95% SLA compliance</span> while administering Active Directory, investigating phishing attempts, escalating endpoint alerts, and performing Wireshark network traffic analysis.<br><br>
+      Graduated with <span class="hl-cyan">MSc Cybersecurity (Merit)</span> from Coventry University, 2026. Actively seeking SOC Analyst and Junior Security Analyst roles in the UK.
+    </div>
+
+    <div class="contact-grid">
+      <div class="c-row"><div class="c-key">EMAIL</div><div class="c-val cyan">parthkoli16@gmail.com</div></div>
+      <div class="c-row"><div class="c-key">LINKEDIN</div><div class="c-val cyan">linkedin.com/in/parthkoli-34678030b</div></div>
+      <div class="c-row"><div class="c-key">LOCATION</div><div class="c-val">Manchester Area, United Kingdom</div></div>
+      <div class="c-row"><div class="c-key">AVAILABILITY</div><div class="c-val green">Open to Work · Immediate</div></div>
+    </div>
+
+    <div class="nav-grid">
+      <button class="nav-btn" style="--btn-color: var(--cyan)" onclick="goTo('skills')">
+        <div class="nav-icon">⚡</div>
+        <div>
+          <div class="nav-title">Skills &amp; Tools</div>
+          <div class="nav-desc">PROFICIENCY · STACK · SPECIALISMS</div>
+        </div>
+        <div class="nav-arrow">›</div>
+      </button>
+      <button class="nav-btn" style="--btn-color: var(--green)" onclick="goTo('certs')">
+        <div class="nav-icon">🏅</div>
+        <div>
+          <div class="nav-title">Certifications</div>
+          <div class="nav-desc">CREDENTIALS · EDUCATION</div>
+        </div>
+        <div class="nav-arrow">›</div>
+      </button>
+      <button class="nav-btn wide" style="--btn-color: var(--amber)" onclick="goTo('experience')">
+        <div class="nav-icon">📁</div>
+        <div>
+          <div class="nav-title">Experience &amp; Education</div>
+          <div class="nav-desc">TIMELINE · ROLES · ACHIEVEMENTS</div>
+        </div>
+        <div class="nav-arrow">›</div>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════ SKILLS ════════════════ -->
+<div class="page" id="page-skills">
+  <div class="inner-wrap fade-in">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;">
+        <button class="back-btn" onclick="goTo('home')">‹ BACK</button>
+        <div class="breadcrumb">HOME › <span>SKILLS &amp; TOOLS</span></div>
+      </div>
+      <span class="online-dot"></span>
+    </div>
+
+    <div class="page-title">SKILLS <em>&amp;</em> TOOLS</div>
+    <div class="page-sub">// TECHNICAL PROFICIENCY · UPDATED 2026</div>
+
+    <div class="skill-section">
+      <div class="sec-label">Core Security</div>
+      <div class="srow"><span class="srow-name">Incident Response</span><div class="bar-track"><div class="bar-fill c" data-w="88"></div></div><span class="srow-pct">88%</span></div>
+      <div class="srow"><span class="srow-name">Phishing Analysis</span><div class="bar-track"><div class="bar-fill c" data-w="84"></div></div><span class="srow-pct">84%</span></div>
+      <div class="srow"><span class="srow-name">Threat Detection</span><div class="bar-track"><div class="bar-fill c" data-w="78"></div></div><span class="srow-pct">78%</span></div>
+      <div class="srow"><span class="srow-name">Log Analysis / SIEM</span><div class="bar-track"><div class="bar-fill c" data-w="72"></div></div><span class="srow-pct">72%</span></div>
+      <div class="srow"><span class="srow-name">Endpoint Security</span><div class="bar-track"><div class="bar-fill c" data-w="75"></div></div><span class="srow-pct">75%</span></div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sec-label">Identity &amp; Access</div>
+      <div class="srow"><span class="srow-name">Active Directory</span><div class="bar-track"><div class="bar-fill g" data-w="86"></div></div><span class="srow-pct">86%</span></div>
+      <div class="srow"><span class="srow-name">IAM / User Provisioning</span><div class="bar-track"><div class="bar-fill g" data-w="83"></div></div><span class="srow-pct">83%</span></div>
+      <div class="srow"><span class="srow-name">Least Privilege / GPO</span><div class="bar-track"><div class="bar-fill g" data-w="78"></div></div><span class="srow-pct">78%</span></div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sec-label">Network &amp; Platform</div>
+      <div class="srow"><span class="srow-name">Wireshark</span><div class="bar-track"><div class="bar-fill a" data-w="80"></div></div><span class="srow-pct">80%</span></div>
+      <div class="srow"><span class="srow-name">Microsoft 365 Security</span><div class="bar-track"><div class="bar-fill a" data-w="76"></div></div><span class="srow-pct">76%</span></div>
+      <div class="srow"><span class="srow-name">Windows Environments</span><div class="bar-track"><div class="bar-fill a" data-w="85"></div></div><span class="srow-pct">85%</span></div>
+      <div class="srow"><span class="srow-name">GDPR / Cyber Essentials</span><div class="bar-track"><div class="bar-fill a" data-w="68"></div></div><span class="srow-pct">68%</span></div>
+    </div>
+
+    <div class="sec-label" style="margin-bottom:0.8rem;">All Skills</div>
+    <div class="tags">
+      <span class="tag c">Incident Response</span>
+      <span class="tag c">SOC Operations</span>
+      <span class="tag c">SIEM</span>
+      <span class="tag c">Threat Detection</span>
+      <span class="tag c">Phishing Analysis</span>
+      <span class="tag c">Log Analysis</span>
+      <span class="tag c">Endpoint Security</span>
+      <span class="tag g">Active Directory</span>
+      <span class="tag g">IAM</span>
+      <span class="tag g">User Provisioning</span>
+      <span class="tag g">Access Controls</span>
+      <span class="tag g">Group Policy</span>
+      <span class="tag g">Least Privilege</span>
+      <span class="tag">Wireshark</span>
+      <span class="tag">Network Traffic Analysis</span>
+      <span class="tag">Microsoft 365</span>
+      <span class="tag">Windows</span>
+      <span class="tag">1st &amp; 2nd Line Support</span>
+      <span class="tag a">GDPR</span>
+      <span class="tag a">Cyber Essentials</span>
+      <span class="tag a">Risk Remediation</span>
+      <span class="tag a">Secure Configuration</span>
+    </div>
+
+    <div class="sec-label" style="margin-bottom:0.8rem;">Tool Stack</div>
+    <table class="tool-table">
+      <tr>
+        <td class="t-icon">🦈</td><td class="t-name">Wireshark</td><td class="t-cat">NETWORK ANALYSIS</td>
+        <td><div class="pips"><div class="pip c"></div><div class="pip c"></div><div class="pip c"></div><div class="pip c"></div><div class="pip"></div></div></td>
+      </tr>
+      <tr>
+        <td class="t-icon">🪟</td><td class="t-name">Active Directory</td><td class="t-cat">IAM</td>
+        <td><div class="pips"><div class="pip g"></div><div class="pip g"></div><div class="pip g"></div><div class="pip g"></div><div class="pip"></div></div></td>
+      </tr>
+      <tr>
+        <td class="t-icon">☁️</td><td class="t-name">Microsoft 365 Security</td><td class="t-cat">CLOUD / PLATFORM</td>
+        <td><div class="pips"><div class="pip g"></div><div class="pip g"></div><div class="pip g"></div><div class="pip g"></div><div class="pip"></div></div></td>
+      </tr>
+      <tr>
+        <td class="t-icon">🔎</td><td class="t-name">SIEM Platforms</td><td class="t-cat">DETECTION</td>
+        <td><div class="pips"><div class="pip c"></div><div class="pip c"></div><div class="pip c"></div><div class="pip"></div><div class="pip"></div></div></td>
+      </tr>
+      <tr>
+        <td class="t-icon">🛡️</td><td class="t-name">Endpoint Security Tools</td><td class="t-cat">EDR / AV</td>
+        <td><div class="pips"><div class="pip c"></div><div class="pip c"></div><div class="pip c"></div><div class="pip"></div><div class="pip"></div></div></td>
+      </tr>
+      <tr>
+        <td class="t-icon">🎯</td><td class="t-name">TryHackMe</td><td class="t-cat">SOC LAB</td>
+        <td><div class="pips"><div class="pip a"></div><div class="pip a"></div><div class="pip a"></div><div class="pip"></div><div class="pip"></div></div></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ════════════════ CERTS ════════════════ -->
+<div class="page" id="page-certs">
+  <div class="inner-wrap fade-in">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;">
+        <button class="back-btn" onclick="goTo('home')">‹ BACK</button>
+        <div class="breadcrumb">HOME › <span>CERTIFICATIONS</span></div>
+      </div>
+      <span class="online-dot"></span>
+    </div>
+
+    <div class="page-title">CERTIFI<em>CATIONS</em></div>
+    <div class="page-sub">// CREDENTIALS · TRAINING · EDUCATION</div>
+
+    <div class="sec-label">Verified Credentials</div>
+    <div class="cert-grid">
+      <div class="cert-card c">
+        <div class="cert-badge done">✓ VERIFIED</div>
+        <div class="cert-issuer">MASTERCARD · FORAGE</div>
+        <div class="cert-name">Cybersecurity Job Simulation</div>
+        <div class="cert-meta">Industry simulation · 2024</div>
+      </div>
+      <div class="cert-card g">
+        <div class="cert-badge done">✓ VERIFIED</div>
+        <div class="cert-issuer">ANZ BANK · FORAGE</div>
+        <div class="cert-name">Cyber Security Management Job Simulation</div>
+        <div class="cert-meta">Industry simulation · 2024</div>
+      </div>
+      <div class="cert-card a">
+        <div class="cert-badge done">✓ VERIFIED</div>
+        <div class="cert-issuer">TRYHACKME</div>
+        <div class="cert-name">Pre-Security Certificate</div>
+        <div class="cert-meta">SOC / Blue Team path · 2024</div>
+      </div>
+      <div class="cert-card b">
+        <div class="cert-badge done">✓ VERIFIED</div>
+        <div class="cert-issuer">ONLINE COURSE</div>
+        <div class="cert-name">Wireshark for Security: Detect Network Anomalies</div>
+        <div class="cert-meta">Network security · 2024</div>
+      </div>
+      <div class="cert-card c">
+        <div class="cert-badge done">✓ VERIFIED</div>
+        <div class="cert-issuer">TRYHACKME</div>
+        <div class="cert-name">Advent of Cybersecurity</div>
+        <div class="cert-meta">Cybersecurity fundamentals · 2024</div>
+      </div>
+      <div class="cert-card g">
+        <div class="cert-badge done">✓ MERIT</div>
+        <div class="cert-issuer">COVENTRY UNIVERSITY</div>
+        <div class="cert-name">MSc Cybersecurity</div>
+        <div class="cert-meta">Postgraduate degree · Graduated with Merit · 2026</div>
+      </div>
+    </div>
+
+    <div class="sec-label">Recommended Next</div>
+    <div class="cert-grid">
+      <div class="cert-card dashed c">
+        <div class="cert-badge wip">RECOMMENDED</div>
+        <div class="cert-issuer">COMPTIA</div>
+        <div class="cert-name">Security+</div>
+        <div class="cert-meta">Most recognised entry-level SOC cert in UK</div>
+      </div>
+      <div class="cert-card dashed g">
+        <div class="cert-badge wip">RECOMMENDED</div>
+        <div class="cert-issuer">MICROSOFT</div>
+        <div class="cert-name">SC-900 Security Fundamentals</div>
+        <div class="cert-meta">Free materials · high relevance to M365 experience</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ EXPERIENCE ════════════════ -->
+<div class="page" id="page-experience">
+  <div class="inner-wrap fade-in">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;">
+        <button class="back-btn" onclick="goTo('home')">‹ BACK</button>
+        <div class="breadcrumb">HOME › <span>EXPERIENCE</span></div>
+      </div>
+      <span class="online-dot"></span>
+    </div>
+
+    <div class="page-title">EXPERI<em>ENCE</em></div>
+    <div class="page-sub">// EMPLOYMENT · EDUCATION · TIMELINE</div>
+
+    <div class="tl-item">
+      <div class="tl-line"></div>
+      <div class="tl-date">2025 → 2026</div>
+      <div class="tl-body">
+        <div class="tl-dot" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div>
+        <div class="tl-role">MSc Cybersecurity — Merit</div>
+        <div class="tl-org">Coventry University · Manchester, UK</div>
+        <ul class="tl-bullets">
+          <li>Advanced modules in incident response, threat intelligence &amp; vulnerability management</li>
+          <li>Compliance frameworks: GDPR, Cyber Essentials, ISO 27001</li>
+          <li>Practical SOC simulation labs, network forensics &amp; secure configuration</li>
+          <li>Graduated with <span class="tl-hl">Merit</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-line"></div>
+      <div class="tl-date">2024</div>
+      <div class="tl-body">
+        <div class="tl-dot" style="background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+        <div class="tl-role">Network &amp; Security Technician</div>
+        <div class="tl-org">SHCN · Mumbai, India</div>
+        <ul class="tl-bullets">
+          <li>Delivered 1st and 2nd line IT security support across Windows &amp; Microsoft 365, achieving <span class="tl-hl">95% SLA compliance</span> over 12 months</li>
+          <li>Administered <span class="tl-hl">Active Directory</span> — user provisioning, access controls &amp; group policy using least-privilege principles</li>
+          <li>Investigated phishing attempts and endpoint alerts; escalated high-risk incidents to maintain security posture</li>
+          <li>Performed <span class="tl-hl">Wireshark</span> network traffic analysis to identify connectivity issues and potential indicators of compromise</li>
+          <li>Documented incident findings, improving knowledge base and reducing recurring incidents</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-line"></div>
+      <div class="tl-date">2021 – 2024</div>
+      <div class="tl-body">
+        <div class="tl-dot" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></div>
+        <div class="tl-role">BE Computer Engineering</div>
+        <div class="tl-org">University of Mumbai</div>
+        <ul class="tl-bullets">
+          <li>Foundations in networking, operating systems, data structures and information security</li>
+          <li>Final year project focused on network security and intrusion detection</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-line"></div>
+      <div class="tl-date">2019 – 2021</div>
+      <div class="tl-body">
+        <div class="tl-dot" style="background:var(--blue);box-shadow:0 0 8px var(--blue)"></div>
+        <div class="tl-role">Diploma in Information Technology</div>
+        <div class="tl-org">Kala Vidya Mandir Institute of Technology</div>
+        <ul class="tl-bullets">
+          <li>Technical foundation in IT systems, networking and infrastructure management</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var current = 'home';
+
+  function goTo(id) {
+    document.getElementById('page-' + current).classList.remove('active');
+    document.getElementById('page-' + id).classList.add('active');
+    current = id;
+    window.scrollTo(0, 0);
+    if (id === 'skills') {
+      setTimeout(function() {
+        document.querySelectorAll('#page-skills .bar-fill').forEach(function(b) {
+          b.style.width = b.getAttribute('data-w') + '%';
+        });
+      }, 150);
+    }
+  }
+</script>
+</body>
+</html>
